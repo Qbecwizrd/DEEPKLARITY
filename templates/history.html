@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume History</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Upload Resume</a>
+        <a href="/history">View Past Resumes</a>
+    </nav>
+
+    <h2>Uploaded Resumes</h2>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Core Skills</th>
+                <th>Soft Skills</th>
+                <th>Work Experience</th>
+                <th>Resume Rating</th>
+                <th>Improvement Areas</th>
+                <th>Upskill Suggestions</th>
+                <th>Career Success Score</th>
+                <th>Positive Words</th>
+                <th>Negative Words</th>
+                <th>Neutral Words</th>
+                <th>Created At</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resume in resumes %}
+            <tr>
+                <td>{{ resume.filename }}</td>
+                <td>{{ resume.name or 'N/A' }}</td>
+                <td>{{ resume.email or 'N/A' }}</td>
+                <td>{{ resume.phone or 'N/A' }}</td>
+                <td>{{ ', '.join(resume.core_skills) if resume.core_skills else 'N/A' }}</td>
+                <td>{{ ', '.join(resume.soft_skills) if resume.soft_skills else 'N/A' }}</td>
+                <td>{{ ', '.join(resume.work_experience) if resume.work_experience else 'N/A' }}</td>
+                <td>{{ resume.resume_rating or 'N/A' }}</td>
+                <td>{{ ', '.join(resume.improvement_areas) if resume.improvement_areas else 'N/A' }}</td>
+                <td>{{ ', '.join(resume.upskill_suggestions) if resume.upskill_suggestions else 'N/A' }}</td>
+                <td>{{ resume.career_success_score or 'N/A' }}</td>
+                <td>{{ resume.positive_words or 'N/A' }}</td>
+                <td>{{ resume.negative_words or 'N/A' }}</td>
+                <td>{{ resume.neutral_words or 'N/A' }}</td>
+                <td>{{ resume.created_at.strftime('%Y-%m-%d %H:%M:%S') if resume.created_at else 'N/A' }}</td>
+                <td>
+                    <button onclick="showDetails('{{ resume.id }}')">View</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function showDetails(resumeId) {
+            window.location.href = `/resume_details/${resumeId}`;
+        }
+    </script>
+</body>
+</html>

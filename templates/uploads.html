@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Upload</title>
+    <link rel="stylesheet" href="/static/styles.css">  <!-- Added CSS Reference -->
+    <script>
+        async function uploadFile(event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            let fileInput = document.querySelector('input[type="file"]');
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                let response = await fetch("http://127.0.0.1:8000/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+
+                document.getElementById("message").innerText = 
+                    response.ok ? "✅ Uploaded Successfully" : "❌ Upload Failed";
+
+                document.getElementById("json").innerText = 
+                    response.ok ? JSON.stringify(result, null, 2) : "Not Uploaded";
+
+            } catch (error) {
+                document.getElementById("message").innerText = "❌ Network Error";
+                document.getElementById("json").innerText = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Your Resume</h2>
+        <form onsubmit="uploadFile(event)">
+            <input type="file" name="file" id="fileInput" required>
+            <label for="fileInput">Choose a File</label>
+            <button type="submit">Upload</button>
+        </form>
+        <p id="message"></p>
+        <pre id="json"></pre>
+    </div>
+</body>
+</html>
